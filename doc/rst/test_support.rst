@@ -229,6 +229,38 @@ Use the ``timeout`` argument to bound long-running simulations. If the simulator
 process does not exit before the timeout expires, Pyxsim terminates it and the
 run fails.
 
+*********************************************
+Usage within the RTL verification environment
+*********************************************
+
+``test_support`` may be used with XSI and the RTL verification environment to
+provide stimuli into the RTL testbench inputs and to capture (and check) the
+testbench outputs. In this mode it calls the XSI API which makes remote
+procedure calls (implemented with GRPC) to XSI server methods in the
+``dpivpi`` layer, which resides in the RTL simulation process.
+This layer can drive or read the values of nets within the RTL simulation.
+
+The ``XSI_ENDPOINT`` environment variable must be set to put test_support in
+RTL mode. It must contain the address of the RTL RPC server and port
+number, for example:
+
+.. code-block:: console
+
+    XSI_ENDPOINT=192.168.1.4:49152
+
+The RTL verification environment will launch a pytest process with this
+environment variable set to point to the RPC server that is running witin the
+RTL simulation.
+
+The RTL verification environment will wait for the launched process to
+terminate. A process exit code of 0 indicates success, and a non-0 code
+inidicates failure. Timeouts are managed by the RTL verification environment
+and it may kill the lauched process when any of its timeouts expire.
+
+The XSI RTL verification environment runs with a granularity of 1 nanosecond.
+This means that each call to XSI clock() will run the simulation for a period
+of 1 nanosecond.
+
 ********
 Examples
 ********

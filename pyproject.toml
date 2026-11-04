@@ -8,7 +8,9 @@ description = ''
 version = '3.0.0'
 requires-python = ">=3.10"
 dependencies = [
-    'colorama==0.4.6'
+    'colorama==0.4.6',
+    'grpcio==1.82.1',
+    'protobuf==7.35.1'
 ]
 
 [project.optional-dependencies]
